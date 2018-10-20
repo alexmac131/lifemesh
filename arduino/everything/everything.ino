@@ -103,7 +103,7 @@ void loop()
   if (!wifi_client.connected()) {
     Serial.println("\nDisconnected from server!");
     wifi_client.stop();
-    while (true); // don't continue
+    wifi_setup();
   }
 
   bmp085_println();
