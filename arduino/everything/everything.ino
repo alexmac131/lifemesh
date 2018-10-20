@@ -10,9 +10,16 @@
 
 uint32_t sensor_reading_delay = 5000; // milliseconds between sensor readings
 
-// Location
+// Identifier
+char station_id[] = "001";
 char latitude[] = "43.451028";
 char longitude[] = "-80.4963671";
+
+// Data
+float temperature = 0.0;
+int pressure = 0;
+float altitude = 0.0;
+int air_quality = 0;
 
 // WIFI: network SSID (name) and network password
 //char wifi_ssid[] = "Alex's Iphone seven";
@@ -101,6 +108,7 @@ void loop()
 
   bmp085_println();
   mq_println();
+  wifi_post();
 
   delay(sensor_reading_delay);
 }
@@ -116,35 +124,6 @@ void trim_leading_spaces(char *str)
   } else {
       *str = *p;
   }
-}
-
-void wifi_read()
-{
-  if (wifi_client.available()) {
-    while (wifi_client.available()) {
-      char c = wifi_client.read();
-//      Serial.write(c);
-    }
-//    Serial.println();
-  }
-}
-
-void wifi_post(char *content)
-{
-  wifi_client.println("POST /collector HTTP/1.1");
-  wifi_client.println("Host: api.lifemesh.io:80");
-  wifi_client.println("Accept: */*");
-  wifi_client.print("Content-Length: ");
-  wifi_client.println(strlen(content));
-  wifi_client.println("Connection: keep-alive");
-  wifi_client.println("Content-Type: application/json");
-  wifi_client.println();
-  wifi_client.println(content);
-
-  Serial.print("POSTed: ");
-  Serial.println(content);
-
-  wifi_read(); // display response to POST
 }
 
 void wifi_println()
@@ -164,30 +143,70 @@ void wifi_println()
   Serial.println();
 }
 
+void wifi_read()
+{
+  if (wifi_client.available()) {
+    while (wifi_client.available()) {
+      char c = wifi_client.read();
+//      Serial.write(c);
+    }
+//    Serial.println();
+  }
+}
+
+void wifi_post()
+{
+  Serial.print("POSTing: ");
+  wifi_client.print("POST /collector?json=");
+  wifi_client.print("{\"station_id\":\"");
+  Serial.print("{\"station_id\":\"");
+  wifi_client.print(station_id);
+  Serial.print(station_id);
+  wifi_client.print("\",\"latitude\":\"");
+  Serial.print("\",\"latitude\":\"");
+  wifi_client.print(latitude);
+  Serial.print(latitude);
+  wifi_client.print("\",\"longitude\":\"");
+  Serial.print("\",\"longitude\":\"");
+  wifi_client.print(longitude);
+  Serial.print(longitude);
+  wifi_client.print("\",\"temperature\":\"");
+  Serial.print("\",\"temperature\":\"");
+  wifi_client.print(temperature);
+  Serial.print(temperature);
+  wifi_client.print("C\",\"pressure\":\"");
+  Serial.print("C\",\"pressure\":\"");
+  wifi_client.print(pressure);
+  Serial.print(pressure);
+  wifi_client.print("Pa\",\"altitude\":\"");
+  Serial.print("Pa\",\"altitude\":\"");
+  wifi_client.print(altitude);
+  Serial.print(altitude);
+  wifi_client.print("m\",\"air_quality\":\"");
+  Serial.print("m\",\"air_quality\":\"");
+  wifi_client.print(air_quality);
+  Serial.print(air_quality);
+  wifi_client.print("PPM\"}");
+  Serial.print("PPM\"}");
+  wifi_client.println(" HTTP/1.1");
+  wifi_client.println("Host: api.lifemesh.io:80");
+  wifi_client.println("Accept: */*");
+  wifi_client.println("Content-Length: 0");
+  wifi_client.println("Connection: keep-alive");
+  wifi_client.println("Content-Type: application/x-www-form-urlencoded");
+  wifi_client.println();
+
+  wifi_read(); // display response to POST
+}
+
 void bmp085_println()
 {
-  char buf_main[200];
-  char buf_float[16]; // 15+trailing NUL
-
-  dtostrf(bmp085.readTemperature(), 6, 2, buf_float);
-  trim_leading_spaces(buf_float);
-  sprintf(buf_main, "{\"latitude\":\"%s\",\"longitude\":\"%s\",\"temperature\":\"%s C\"}", latitude, longitude, buf_float);
-  wifi_post(buf_main);
-
-  sprintf(buf_main, "{\"latitude\":\"%s\",\"longitude\":\"%s\",\"pressure\":\"%d Pa\"}", latitude, longitude, bmp085.readPressure());
-  wifi_post(buf_main);
-
-  dtostrf(bmp085.readAltitude(), 8, 2, buf_float);
-  trim_leading_spaces(buf_float);
-  sprintf(buf_main, "{\"latitude\":\"%s\",\"longitude\":\"%s\",\"altitude\":\"%s m\"}", latitude, longitude, buf_float);
-  wifi_post(buf_main);
+  temperature = bmp085.readTemperature();
+  pressure = bmp085.readPressure();
+  altitude = bmp085.readAltitude();
 }
 
 void mq_println()
 {
-  char buf_main[200];
-
-  int value = analogRead(0); // read analog input pin 0
-  sprintf(buf_main, "{\"latitude\":\"%s\",\"longitude\":\"%s\",\"air_quality\":\"%d PPM\"}", latitude, longitude, value);
-  wifi_post(buf_main);
+  air_quality = analogRead(0);
 }
