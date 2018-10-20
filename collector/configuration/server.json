@@ -1,0 +1,56 @@
+{
+  "env": "dev",
+  "foreCastunits": "ca",
+  "foreCastexclude": "",
+  "foreCasttimeout": 1000,
+  "password": {
+    "minLength": 8,
+    "maxLength": 20
+  },
+  "fakeipFlag": true,
+  "fakeaddress": "208.72.125.2",
+  "passwordHashDefault": "bcrypt",
+  "minFactor": 14,
+  "serverPort": {
+    "dev": 3000,
+    "qa": 3001,
+    "prod": 80,
+    "mobile": 1025
+  },
+  "serviceName": "Life Mesh ",
+  "dbName": "lifemesh",
+  "sessionName": "lifemesh",
+  "serverHost": {
+    "dev": "127.0.0.1",
+    "qa": "127.0.0.1",
+    "prod": "127.0.0.1"
+  },
+  "webHost": {
+    "dev": "192.168.1.2",
+    "qa": "127.0.0.1",
+    "prod": "www.lifemesh.io"
+  },
+  "dbPort": {
+    "dev": 27017,
+    "qa": 27020,
+    "prod": 27017
+  },
+  "contact": {
+    "dev": "alex@lifemesh.io",
+    "qa": "alex@lifemesh.io",
+    "prod": "support@lifemesh.io"
+  },
+  "log4jsHandle": "lifemesh",
+  "logLevel": {
+    "dev": "debug",
+    "qa": "debug",
+    "prod": "info"
+  },
+  "basePath": {
+    "dev": "/var/lifemesh.io",
+    "qa": "/var/lifemesh.io",
+    "prod": "/home/ubuntu/lifemesh.io"
+  },
+  "logFile": "logs/lifemesh.log",
+  "title": "Life Mesh"
+}
