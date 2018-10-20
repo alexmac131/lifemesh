@@ -1,8 +1,9 @@
 {
-  "name": "collector",
+  "name": "alexmackinnon",
   "version": "1.0.0",
-  "main": "collector.js",
+  "main": "alexmackinnon.js",
   "dependencies": {
+    "angular": "",
     "assert": "",
     "async": "",
     "axios": "^0.18.0",
@@ -15,6 +16,7 @@
     "connect-mongo": "^2.0.1",
     "cookie-parser": "",
     "country-data": "",
+    "d3": "",
     "darksky": "",
     "darksky-node": "0.0.2",
     "ejs": "",
