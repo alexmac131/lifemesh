@@ -25,7 +25,7 @@ int air_quality = 0;
 
 char server[] = "api.lifemesh.io";
 
-uint32_t sensor_reading_delay = 30000; // milliseconds between sensor readings
+uint32_t sensor_reading_delay = 10000; // milliseconds between sensor readings
 
 void setup()
 {
