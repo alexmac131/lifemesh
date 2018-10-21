@@ -8,12 +8,14 @@
 
 // MQ135 has no #include prerequisites
 
-uint32_t sensor_reading_delay = 5000; // milliseconds between sensor readings
-
 // Identifier
 char station_id[] = "001";
 char latitude[] = "43.451028";
 char longitude[] = "-80.4963671";
+
+// WIFI: network SSID (name) and network password
+char wifi_ssid[] = "Alex's Iphone seven";
+char wifi_pass[] = "alexwashere131";
 
 // Data
 float temperature = 0.0;
@@ -21,13 +23,9 @@ int pressure = 0;
 float altitude = 0.0;
 int air_quality = 0;
 
-// WIFI: network SSID (name) and network password
-//char wifi_ssid[] = "Alex's Iphone seven";
-//char wifi_pass[] = "alexwashere131";
-char wifi_ssid[] = "Windows Phone7348";
-char wifi_pass[] = "E069$3y3";
-
 char server[] = "api.lifemesh.io";
+
+uint32_t sensor_reading_delay = 30000; // milliseconds between sensor readings
 
 void setup()
 {
@@ -66,15 +64,22 @@ void wifi_setup()
 
     delay(5000); // wait 5 seconds for connection
   }
-  Serial.println("You're connected to the network!");
-  wifi_println();
+  Serial.print("  IP Address: ");
+  Serial.println(WiFi.localIP());
+  Serial.print("  SSID: ");
+  Serial.println(WiFi.SSID());
+  Serial.print("  Signal strength (RSSI):");
+  Serial.print(WiFi.RSSI());
+  Serial.println(" dBm");
+  Serial.print("  Encryption Type:");
+  Serial.println(WiFi.encryptionType(), HEX);
 
-  Serial.print("Starting connection to: ");
+  Serial.print("\nConnecting to: ");
   Serial.println(server);
-  if (wifi_client.connect(server, 80)) {
-    Serial.print("Connected to: ");
-    Serial.println(server);
-  }
+  if (wifi_client.connect(server, 80))
+    Serial.println();
+  else
+    delay(60000); // wait 60 seconds; loop() will try to reconnect
 }
 
 // Connect VCC of the BMP085 sensor to 3.3V
@@ -90,16 +95,10 @@ void bmp085_setup()
     Serial.println("Could not find a valid BMP085 sensor, check wiring!");
 }
   
-long loop_counter = 0;
-
 void loop()
 {
-  Serial.print("\nloop_counter=");
-  Serial.println(loop_counter++);
-
   wifi_read();
-
-  // If the server is disconnected then stop the client.
+  // If the server is disconnected then automatically reconnect.
   if (!wifi_client.connected()) {
     Serial.println("\nDisconnected from server!");
     wifi_client.stop();
@@ -124,23 +123,6 @@ void trim_leading_spaces(char *str)
   } else {
       *str = *p;
   }
-}
-
-void wifi_println()
-{
-  Serial.print("IP Address: ");
-  Serial.println(WiFi.localIP());
-
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
-
-  Serial.print("Signal strength (RSSI):");
-  Serial.print(WiFi.RSSI());
-  Serial.println(" dBm");
-
-  Serial.print("Encryption Type:");
-  Serial.println(WiFi.encryptionType(), HEX);
-  Serial.println();
 }
 
 void wifi_read()
@@ -195,6 +177,7 @@ void wifi_post()
   wifi_client.println("Connection: keep-alive");
   wifi_client.println("Content-Type: application/x-www-form-urlencoded");
   wifi_client.println();
+  Serial.println();
 
   wifi_read(); // display response to POST
 }
