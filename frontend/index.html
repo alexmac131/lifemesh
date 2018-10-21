@@ -1,0 +1,97 @@
+<html >
+
+<head>
+
+    <style></style>
+    <link rel="stylesheet" href="./css/design.css" type="text/css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css">
+
+
+
+</head>
+
+<body>
+    <div class="row flex header">
+        <a href="index.html">
+            <div class="row" style="display: block;">
+                <div class="col-9">
+                    <img src="img/home.png" height="25px;" style="margin-left: 0%">
+
+                </div>
+                <div class="col-3">
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="row container" id="hero">
+
+        <img src="img/logo.png" width="45%" height="auto" style="text-align: right;" onclick="fetchData();" id="start">
+        <h3 style="background-color: rgba(0,0,0,0.8); width: 580px; margin-top: 2.5%; height: 55px; padding: 10; border-radius: 10px; display: none">Press me to see the conditions in your area</h3>
+
+    </div>
+
+    <div class="container" id="dashboard">
+        <div class="row">
+            <span>
+               <h1 id="location">Location:</h1>
+           
+               <p style="display: inline-block" id="text"># of devices connected:</span>
+        </div>
+        <div class="mainDash mainBg row " id="mainDash">
+
+            <div class="row" id="front">
+                <div class="col-6 " data-toggle="modal" data-target="#heatIndex" id="dashBtn">
+                    <h4 id="tileFont">Air Quality Index</h4>
+                    <h5 id="aq"></h5>
+                    <img src="img/heat.png" width="150px;" height="150px;" id="iconOne">
+                </div>
+                <div class="col-6" data-toggle="modal" data-target="#air" id="dashBtn">
+                    <h4 id="tileFont">Temperature </h4>
+                    <h5 id="rh"></h5>
+                    <img src="img/lung.png" width="150px;" height="150px;" id="iconTwo">
+                </div>
+                <div class="col-6" data-toggle="modal" data-target="#uv" id="dashBtn">
+                    <h4 id="tileFont"> UV Index</h4>
+                    <h5 id="uvv"></h5>
+                    <img src="img/sun.png" width="150px;" height="150px;" id="iconThree">
+
+                </div>
+                <div class="col-6" data-toggle="modal" data-target="#wind" id="dashBtn">
+                    <h4 id="tileFont"> Wind Speed</h4>
+                    <h5 id="wd"></h5>
+                    <img src="img/wind.png" width="150px;" height="155px;" id="iconFour">
+
+                </div>
+            </div>
+            <div class="row" style="display: block;">
+                <div class="col-4">
+                </div>
+                <div class="col-8">
+                    <img src="img/info.png" height="25px;" style="margin:10%;" onclick="caseTwo();" id="moreInfo">
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="footer">
+        <div class="row" style="">
+            <div class="col-4">
+                <p style="margin-left: 10%; padding-top: 10px;padding-left: 10px; font-size: 1.1rem; text-align: left; display: inline-block;"> Developed by team <a target ="_blank" href="https://2018.spaceappschallenge.org/challenges/what-world-needs-now/health-makes-wealth/teams/lifemesh/project">LifeMesh</a></p>
+            </div>
+            <div class="col-8">
+                <p style="margin-left: 30%; padding-top: 10px; padding-right: 10px; font-size: 1.1rem; display: inline-block; text-align: right;">Powered by data from CSA, CDC, NASA and citizens like you!</p>
+
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/main.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.js"></script>
+
+
+
+</html>
